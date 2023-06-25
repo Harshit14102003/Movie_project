@@ -8,6 +8,7 @@ const andika = Andika({
     subsets: ['latin'],
     display: 'swap',
   })
+ 
   function ContactForm() {
     const [user,setUser]=useState({
         username:"",
@@ -15,13 +16,40 @@ const andika = Andika({
         phone:"",
         message:""
     })
+    const [status, setStatus] = useState(null);
   function handleChange(e){
     const title=e.target.name;
     const value=e.target.value;
     setUser((prevUser)=>({...prevUser,[title]:value}));
   }
-  function handleSubmit(){
-    
+  async function handleSubmit(e){
+    e.preventDefault();
+    try{
+        const response = await fetch('/api/contact', {
+            method:'POST',
+            headers:{"Content_Type":"application/json"},
+            body: JSON.stringify({
+                username:user.username,
+                email:user.email,
+                phone:user.phone,
+                message:user.message
+            })
+        })
+        // Set the status based on the response from the API route
+        if (response.status === 200) {
+            setUser({
+                username: "",
+                email: "",
+                phone: "",
+                message: ""
+            })
+            setStatus('success');
+        } else {
+            setStatus('error');
+        }
+    }catch(e){
+console.log(e);
+    }
   }
   return (
     <form className={styles.contact_form} onSubmit={handleSubmit}>
@@ -74,7 +102,12 @@ Enter Your Name
                     />
                 </label>
             </div>
-            <div><button type="submit" className={andika.className}>Send a Message</button></div>
+            <div>
+                {status === 'success' && <p className={styles.success_msg}>Thank you for your message!</p>}
+                {status === 'error' && <p className={styles.error_msg}>There was an error submitting your message. Please try again.</p>}
+
+                <button type="submit" className={andika.className}>Send Message</button>
+            </div>
     </form>
   )
 }
