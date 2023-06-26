@@ -1,4 +1,5 @@
-import App from './components/header'
+import Footer from './components/footer'
+import Header from './components/header'
 import './globals.css'
 import { Andika } from 'next/font/google'
  
@@ -20,8 +21,9 @@ export default function RootLayout({ children }) {
     <html lang="en" className={andika.className}>
 
       <body>
-      <App/>
+      <Header/>
       {children}
+      <Footer/>
       </body>
     </html>
   )
