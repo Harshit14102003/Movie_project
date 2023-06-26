@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import MovieCard from "@/app/components/movieCard";
+import MovieCard from "@/app/components/MovieCard";
 import styles from "@/app/styles/common.module.css" 
 const movie = async() => {
   //wait two second so that i see loading button
